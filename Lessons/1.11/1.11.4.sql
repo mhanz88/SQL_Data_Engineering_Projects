@@ -1,0 +1,33 @@
+SELECT *
+FROM job_postings_fact
+LIMIT 10;
+
+SELECT *
+FROM skills_job_dim
+LIMIT 10;
+
+SELECT *
+FROM skills_dim
+LIMIT 10;
+
+SELECT 
+    jpf.job_title_short,
+    sjd.skill_id,
+    sd.skills,
+    COUNT (jpf.job_id) AS job_count
+FROM 
+    job_postings_fact AS jpf
+LEFT JOIN 
+    skills_job_dim AS sjd
+    ON jpf.job_id = sjd.job_id
+LEFT JOIN 
+    skills_dim AS sd 
+    ON sjd.skill_id = sd.skill_id
+WHERE 
+    jpf.job_title_short LIKE '%Data%'
+GROUP BY
+    jpf.job_title_short,
+    sjd.skill_id,
+    sd.skills
+ORDER BY 
+    job_count DESC; 

@@ -1,0 +1,27 @@
+SELECT *
+FROM job_postings_fact
+LIMIT 10;
+
+SELECT *
+FROM skills_dim
+LIMIT 10;
+
+SELECT *
+FROM skills_job_dim
+LIMIT 10;
+
+SELECT  
+    jpf.job_id,
+    jpf.job_title,
+    sd.skills, 
+    jpf.job_country 
+FROM job_postings_fact AS jpf 
+LEFT JOIN skills_job_dim AS sjd 
+    ON jpf.job_id = sjd.job_id
+FULL JOIN skills_dim AS sd
+    ON sjd.skill_id = sd.skill_id
+WHERE jpf.job_title_short = 'Data Engineer'
+      AND jpf.job_country = 'United States'
+      AND job_health_insurance = TRUE 
+ORDER BY 
+    jpf.job_id DESC ;    
